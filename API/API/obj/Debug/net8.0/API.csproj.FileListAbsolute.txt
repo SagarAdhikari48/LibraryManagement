@@ -166,3 +166,5 @@ D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\run
 D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Runtime.Caching.dll
 D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\myProject\libraray management angular asp dotnet\API\API\obj\Debug\net8.0\API.sourcelink.json

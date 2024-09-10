@@ -729,6 +729,10 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -750,6 +754,7 @@ namespace API.Migrations
                             Email = "sagradhkr48@gmail.com",
                             FirstName = "Sagar",
                             LastName = "Adhikari",
+                            Password = "",
                             PhoneNumber = "9843650962",
                             UserType = "ADMIN"
                         });

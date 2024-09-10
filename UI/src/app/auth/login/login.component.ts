@@ -6,7 +6,7 @@ import { ApiService } from '../../shared/services/api.service';
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -16,7 +16,6 @@ export class LoginComponent {
     fb: FormBuilder,
     private apiService: ApiService,
     private snackBar: MatSnackBar
-    
   ) {
     this.loginForm = fb.group({
       email: fb.control('', [Validators.required]),
@@ -25,24 +24,25 @@ export class LoginComponent {
   }
 
   login() {
-  //   let loginInfo = {
-  //     email: this.loginForm.get('email')?.value,
-  //     password: this.loginForm.get('password')?.value,
-  //   };
-  //   this.apiService.login(loginInfo).subscribe({
-  //     next: (res) => {
-  //       if (res == 'not found')
-  //         this.snackBar.open('Credential are invalid!', 'OK');
-  //       else if (res == 'unapproved')
-  //         this.snackBar.open('Your account is not Aprooved by Admin!', 'OK');
-  //         else if (res == 'blocked')
-  //         this.snackBar.open('Your account is BLOCKED. Please go to admin office to Unblock.', 'OK');
-  //       else {
-  //         localStorage.setItem('access_token', res);
-  //         this.apiService.userStatus.next("loggedIn");
-  //       }
-  //     },
-  //   });
-  }
+    const loginInfo = {
+      email: this.loginForm.get('email')?.value,
+      password: this.loginForm.get('password')?.value,
+    };
 
+    this.apiService.login(loginInfo).subscribe({
+      next: (res) => {
+        if (res === 'Not Found!') {
+          this.snackBar.open('Credentials are invalid!', 'Ok');
+        } else if (res === 'Unapproved') {
+          this.snackBar.open(
+            'Your account is not approved by Admin yet!',
+            'Ok'
+          );
+        } else {
+          localStorage.setItem('access_token', res);
+          this.apiService.userStatus.next("loggedIn");
+        }
+      },
+    });
+  }
 }
