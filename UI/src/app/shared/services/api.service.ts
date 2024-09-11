@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { map, Subject } from 'rxjs';
-import { Book, Order, User, UserType } from '../../models/models';
+import { map, Observable, Subject } from 'rxjs';
+import { Book, BookCategory, Order, User, UserType } from '../../models/models';
 
 @Injectable({
   providedIn: 'root',
@@ -85,7 +85,8 @@ export class ApiService {
         params: params,
       })
       .pipe(
-        map((orders) => {//map the interface of frontend 
+        map((orders) => {
+          //map the interface of frontend
           let newOrders = orders.map((order: any) => {
             let newOrder: Order = {
               id: order.id,
@@ -106,15 +107,38 @@ export class ApiService {
   }
 
   getFine(order: Order) {
-    debugger;
     const today = new Date();
     const orderedDate = new Date(Date.parse(order.orderDate));
     orderedDate.setDate(orderedDate.getDate() + 10);
-    if(orderedDate.getTime() < today.getTime()){
+    if (orderedDate.getTime() < today.getTime()) {
       var diff = today.getTime() - orderedDate.getTime();
-      var days = Math.floor(diff / (1000* 86400));
+      var days = Math.floor(diff / (1000 * 86400));
       return days * 50;
     }
     return 0;
+  }
+
+  addNewCategory(category: BookCategory) {
+    console.log('Category:::=', category);
+    return this.http.post(this.baseUrl + 'AddNewCategory', category, {
+      responseType: 'text',
+    });
+  }
+
+  getCategories() {
+    return this.http.get<BookCategory[]>(this.baseUrl + 'GetCategories');
+  }
+
+  addNewBook(book: Book) {
+    return this.http.post(this.baseUrl + 'AddNewBook', book, {
+      responseType: 'text',
+    });
+  }
+
+  deleteBook(id: number): Observable<any> {
+    return this.http.delete(this.baseUrl + 'DeleteBook', {
+      params: new HttpParams().set('id', id.toString()), // Ensure id is a string
+      responseType: 'text',
+    });
   }
 }

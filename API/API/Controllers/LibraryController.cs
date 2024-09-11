@@ -124,5 +124,74 @@ namespace API.Controllers
             }
 
         }
+
+        [Authorize]
+        [HttpPost("AddNewCategory")]
+        public ActionResult AddNewCategory(BookCategory category)
+        {
+            var exists = _context.BookCategories.Any(bc =>
+                bc.Category == category.Category && bc.SubCategory == category.SubCategory);
+            if (exists)
+            {
+                return Ok("cannot insert");
+            }
+            else
+            {
+                _context.BookCategories.Add(category);
+                _context.SaveChanges();
+                return Ok("INSERTED");
+
+            }
+        }
+
+        [Authorize]
+        [HttpGet("GetCategories")]
+        public ActionResult GetCategories()
+        {
+            var categories = _context.BookCategories.ToList();
+            if (categories.Any())
+            {
+                return Ok(categories);
+            }
+            return NotFound();
+        }
+
+        [Authorize]
+        [HttpPost("AddNewBook")]
+        public ActionResult AddNewBook(Book book)
+        {
+            var exist = _context.Books.Any(b => b.Id == book.Id);
+            if (exist)
+            {
+                return Ok("Books already exist!");
+            }
+            else
+            {
+                book.BookCategory = null;
+                _context.Books.Add(book);
+                _context.SaveChanges();
+                return Ok("Inserted");
+            }
+        }
+        
+        // [Authorize]
+        [HttpDelete("DeleteBook")]
+        public ActionResult DeleteBook(int id)
+        {
+            var exists = _context.Books.Any(b => b.Id == id);
+            if (exists)
+            {
+                var book = _context.Books.Find(id);
+                _context.Books.Remove(book!);
+                _context.SaveChanges();
+                return Ok("deleted");
+            }
+            else
+            {
+                return Ok("Not Found!");
+
+            }
+        }
+        
     }  
 }

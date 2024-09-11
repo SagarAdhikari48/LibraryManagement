@@ -19,7 +19,7 @@ builder.Services.AddDbContext<Context>(option =>
 });
 builder.Services.AddCors(c => c.AddPolicy("myCorsPolicy", policy =>
 {
-    policy.WithOrigins("http://localhost:4200/").AllowAnyHeader().AllowAnyOrigin();
+    policy.WithOrigins("http://localhost:4200/").AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
 }));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option =>
 {

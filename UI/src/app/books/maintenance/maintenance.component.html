@@ -1,0 +1,80 @@
+<mat-card>
+    <mat-card-header>
+        <h1>Add New Category</h1>
+    </mat-card-header>
+
+    <mat-card-content [formGroup]="newCategory">
+        <mat-form-field>
+            <mat-label>Category</mat-label>
+            <input matInput formControlName="category"/>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Sub Category</mat-label>
+            <input matInput formControlName="subCategory"/>
+        </mat-form-field>
+
+        <button mat-stroked-button [disabled]="!newCategory.valid" (click)="addNewCategory()">
+            <span>ADD</span>
+        </button>
+    </mat-card-content>
+
+</mat-card>
+
+<mat-card>
+    <mat-card-header>
+        <h1>Add New Book</h1>
+    </mat-card-header>
+
+    <mat-card-content [formGroup]="addNewBook">
+        <mat-form-field class="book-title">
+            <mat-label>Book Title</mat-label>
+            <input matInput formControlName="title"/>    
+        </mat-form-field>
+
+        <mat-form-field class="book-author">
+            <mat-label>Book author</mat-label>
+            <input matInput formControlName="author"/>    
+        </mat-form-field>
+
+        <mat-form-field class="book-price">
+            <mat-label>Book price</mat-label>
+            <input matInput formControlName="price"/>    
+        </mat-form-field>
+
+        <mat-form-field color="accent" class="category-select">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category" #categorySelect>
+                @for (option of categoryOptions; track categoryOptions) {
+                <mat-option [value]="option.value">
+                    {{ option.displayValue | titlecase }}
+                </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-stroked-button [disabled]="!addNewBook.valid || categorySelect.empty" (click)="addNewBooks()">
+          <span>Add New Book</span>
+        </button>
+
+    </mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-card-header>
+        <h1>Delete Book</h1>
+    </mat-card-header>
+
+    <mat-card-content>
+        <mat-form-field>
+            <mat-label>Book Id</mat-label>
+            <input matInput [formControl]="deleteBook"/> 
+        </mat-form-field>
+
+        <button mat-stroked-button [disabled]="!deleteBook.valid" (click)="deleteExistingBook()">
+            <span>Delete</span>
+          </button>
+    </mat-card-content>
+
+</mat-card>
+
