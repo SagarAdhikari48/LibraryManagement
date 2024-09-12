@@ -4,16 +4,17 @@ import { UserordersComponent } from './userorders/userorders.component';
 import { SharedModule } from '../shared/shared.module';
 import { PageTableComponent } from "../shared/components/page-table/page-table.component";
 import { ProfileComponent } from './profile/profile.component';
+import { ApprovalRequestComponent } from './approval-request/approval-request.component';
 
 @NgModule({
   declarations: [
     UserordersComponent,
-    ProfileComponent
+    ProfileComponent,
+    ApprovalRequestComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
-    PageTableComponent
 ]
 })
 export class UsersModule { }

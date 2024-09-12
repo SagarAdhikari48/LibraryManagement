@@ -192,6 +192,59 @@ namespace API.Controllers
 
             }
         }
+        [HttpGet("ReturnBook")]
+        public ActionResult ReturnBook(int userId, int bookId, int fine)
+        {
+            var order = _context.Orders.SingleOrDefault(o => o.UserId == userId && o.BookId == bookId);
+            if(order is not null)
+            {
+                order.Returned = true;
+                order.ReturnedDate = DateTime.Now;
+                order.FinePaid = fine;
+                var book = _context.Books.Single(b => b.Id == order.BookId);
+                book.Ordered = false;
+                _context.SaveChanges();
+                return Ok("returned");
+            }
+            return Ok("not returned");
+        }
+        
+        [Authorize]
+        [HttpGet("GetUsers")]
+        public ActionResult GetUsers()
+        {
+            return Ok(_context.Users.ToList());
+        }
+
+        [Authorize]
+        [HttpGet("ApproveRequest")]
+        public ActionResult ApproveRequest(int userId)
+        {
+            var user = _context.Users.Find(userId);
+
+            if (user is not null)
+            {
+                if(user.AccountStatus == AccountStatus.UNAPPROVED)
+                {
+                    user.AccountStatus = AccountStatus.ACTIVE;
+                    _context.SaveChanges();
+
+                    _emailService.SendEmail(user.Email, "Account Approved", $"""
+                                                                                <html>
+                                                                                    <body>
+                                                                                        <h2>Hi, {user.FirstName} {user.LastName}</h2>
+                                                                                        <h3>You Account has been approved by admin.</h3>
+                                                                                        <h3>Now you can login to your account.</h3>
+                                                                                    </body>
+                                                                                </html>
+                                                                            """);
+
+                    return Ok("approved");
+                }
+            }
+
+            return Ok("not approved");
+        }
         
     }  
 }

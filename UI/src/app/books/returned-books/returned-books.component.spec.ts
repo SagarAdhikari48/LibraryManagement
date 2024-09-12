@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageTableComponent } from './page-table.component';
+import { ReturnedBooksComponent } from './returned-books.component';
 
-describe('PageTableComponent', () => {
-  let component: PageTableComponent;
-  let fixture: ComponentFixture<PageTableComponent>;
+describe('ReturnedBooksComponent', () => {
+  let component: ReturnedBooksComponent;
+  let fixture: ComponentFixture<ReturnedBooksComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PageTableComponent]
+      imports: [ReturnedBooksComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PageTableComponent);
+    fixture = TestBed.createComponent(ReturnedBooksComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

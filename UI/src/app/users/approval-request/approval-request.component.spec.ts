@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageTableComponent } from './page-table.component';
+import { ApprovalRequestComponent } from './approval-request.component';
 
-describe('PageTableComponent', () => {
-  let component: PageTableComponent;
-  let fixture: ComponentFixture<PageTableComponent>;
+describe('ApprovalRequestComponent', () => {
+  let component: ApprovalRequestComponent;
+  let fixture: ComponentFixture<ApprovalRequestComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PageTableComponent]
+      imports: [ApprovalRequestComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PageTableComponent);
+    fixture = TestBed.createComponent(ApprovalRequestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

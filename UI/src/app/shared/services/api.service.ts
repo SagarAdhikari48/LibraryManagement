@@ -141,4 +141,25 @@ export class ApiService {
       responseType: 'text',
     });
   }
+
+  returnBook(userId: string, bookId: string, fine: number) {
+    return this.http.get(this.baseUrl + 'ReturnBook', {
+      params: new HttpParams()
+        .append('userId', userId)
+        .append('bookId', bookId)
+        .append('fine', fine),
+      responseType: 'text',
+    });
+  }
+
+  getUsers() {
+    return this.http.get<User[]>(this.baseUrl + 'GetUsers');
+  }
+
+  approveRequest(userId: number) {
+    return this.http.get(this.baseUrl + 'ApproveRequest', {
+      params: new HttpParams().append('userId', userId),
+      responseType: 'text',
+    });
+  }
 }
