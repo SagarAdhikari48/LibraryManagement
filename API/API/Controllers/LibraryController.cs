@@ -58,6 +58,9 @@ namespace API.Controllers
                 if (user.AccountStatus == AccountStatus.UNAPPROVED)
                 {
                     return Ok("Unapproved");
+                }else if (user.AccountStatus == AccountStatus.BLOCKED)
+                {
+                    return Ok("blocked");
                 }
 
                 return Ok(_jwtService.GenerateToken(user));
@@ -245,6 +248,129 @@ namespace API.Controllers
 
             return Ok("not approved");
         }
+
+        [Authorize]
+        [HttpGet("GetOrders")]
+        public ActionResult GetOrders()
+        {
+            var orders = _context.Orders.Include(o =>o.User).Include(o=>o.Book).ToList();
+            if (orders.Any())
+            {
+                return Ok(orders);
+            }
+
+            return NotFound();
+        }
+
+        [Authorize]
+        [HttpGet("SendEmailForPendingReturns")]
+        public ActionResult SendEmailForPendingReturns()
+        {
+            var orders = _context.Orders
+                            .Include(o => o.Book)
+                            .Include(o => o.User)
+                            .Where(o => !o.Returned)
+                            .ToList();
+
+            var emailsWithFine = orders.Where(o => DateTime.Now > o.OrderedDate.AddDays(10)).ToList();
+            emailsWithFine.ForEach(x => x.FinePaid = (DateTime.Now - x.OrderedDate.AddDays(10)).Days * 50);
+
+            var firstFineEmails = emailsWithFine.Where(x => x.FinePaid == 50).ToList();
+            firstFineEmails.ForEach(x =>
+            {
+                var body = $"""
+                <html>
+                    <body>
+                        <h2>Hi, {x.User?.FirstName} {x.User?.LastName}</h2>
+                        <h4>Yesterday was your last day to return Book: "{x.Book?.Title}".</h4>
+                        <h4>From today, every day a fine of 50Rs will be added for this book.</h4>
+                        <h4>Please return it as soon as possible.</h4>
+                        <h4>If your fine exceeds 500Rs, your account will be blocked.</h4>
+                        <h4>Thanks</h4>
+                    </body>
+                </html>
+                """;
+
+                _emailService.SendEmail(x.User!.Email, "Return Overdue", body);
+            });
+
+            var regularFineEmails = emailsWithFine.Where(x => x.FinePaid > 50 && x.FinePaid <= 500).ToList();
+            regularFineEmails.ForEach(x =>
+            {
+                var regularFineEmailsBody = $"""
+                <html>
+                    <body>
+                        <h2>Hi, {x.User?.FirstName} {x.User?.LastName}</h2>
+                        <h4>You have {x.FinePaid}Rs fine on Book: "{x.Book?.Title}"</h4>
+                        <h4>Pleae pay it as soon as possible.</h4>
+                        <h4>Thanks</h4>
+                    </body>
+                </html>
+                """;
+
+                _emailService.SendEmail(x.User?.Email!, "Fine To Pay", regularFineEmailsBody);
+            });
+
+            var overdueFineEmails = emailsWithFine.Where(x => x.FinePaid > 500).ToList();
+            overdueFineEmails.ForEach(x =>
+            {
+                var overdueFineEmailsBody = $"""
+                <html>
+                    <body>
+                        <h2>Hi, {x.User?.FirstName} {x.User?.LastName}</h2>
+                        <h4>You have {x.FinePaid}Rs fine on Book: "{x.Book?.Title}"</h4>
+                        <h4>Your account is BLOCKED.</h4>
+                        <h4>Pleae pay it as soon as possible to UNBLOCK your account.</h4>
+                        <h4>Thanks</h4>
+                    </body>
+                </html>
+                """;
+                _emailService.SendEmail(x.User?.Email!, "Fine Overdue", overdueFineEmailsBody);
+            });
+            return Ok("sent");
+        }
+
+        [Authorize]
+        [HttpGet("BlockedFineOverdueUser")]
+        public ActionResult BlockedFineOverdueUser()
+        {
+            var orders = _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.Book)
+                .Where(o => !o.Returned)
+                .ToList();
+
+            var orderWithFine = orders.Where(o => DateTime.Now > o.OrderedDate.AddDays(10)).ToList();
+            orderWithFine.ForEach(of =>of.FinePaid = (DateTime.Now - of.OrderedDate.AddDays(10)).Days * 50);
+            var users = orderWithFine.Where(owf => owf.FinePaid > 500).Select(x=>x.User).Distinct().ToList();
+            if (users is not null && users.Any())
+            {
+                users.ForEach(user => user.AccountStatus = AccountStatus.BLOCKED);
+                _context.SaveChanges();
+                return Ok("blocked");
+            }
+            else
+            {
+                return Ok("not blocked");
+            }
+
+        }
+        
+        [Authorize]
+        [HttpGet("Unblock")]
+        public ActionResult Unblock(int userId)
+        {
+            var user = _context.Users.Find(userId);
+            if(user is not null)
+            {
+                user.AccountStatus = AccountStatus.ACTIVE;
+                _context.SaveChanges();
+                return Ok("unblocked");
+            }
+
+            return Ok("not unblocked");
+        }
+
         
     }  
 }

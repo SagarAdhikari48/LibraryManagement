@@ -31,6 +31,7 @@ export class LoginComponent {
 
     this.apiService.login(loginInfo).subscribe({
       next: (res) => {
+        console.log("login response:::", res);
         if (res === 'Not Found!') {
           this.snackBar.open('Credentials are invalid!', 'Ok');
         } else if (res === 'Unapproved') {
@@ -38,7 +39,9 @@ export class LoginComponent {
             'Your account is not approved by Admin yet!',
             'Ok'
           );
-        } else {
+        }else if(res === 'blocked'){
+          this.snackBar.open("Your account is BLOCKED! Please go to admin office to unblock","Ok");
+        }else {
           localStorage.setItem('access_token', res);
           this.apiService.userStatus.next("loggedIn");
         }

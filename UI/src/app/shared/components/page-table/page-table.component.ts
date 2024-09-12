@@ -20,13 +20,13 @@ export class PageTableComponent {
   @Output()
   unblock = new EventEmitter<User>();
 
+  constructor(private apiService: ApiService) {}
+
   getFineToPay(order: Order) {
     return this.apiService.getFine(order);
   }
 
-  constructor(private apiService: ApiService) {}
-
-  getAccountStatus(input: AccountStatus) {
-    return AccountStatus[input];
+  getAccountStatus(status: AccountStatus) {
+    return AccountStatus[status];
   }
 }

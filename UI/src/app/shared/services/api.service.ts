@@ -162,4 +162,48 @@ export class ApiService {
       responseType: 'text',
     });
   }
+
+  getOrders(){
+    return this.http.get<any>(this.baseUrl + "GetOrders").pipe(
+      map((orders: any)=>{
+        console.log("pippe map orders",orders)
+
+        let newOrders = orders.map((order: any) =>{
+          console.log("pippe map order",order)
+          let newOrder: Order = {
+            id: order.id,
+            userId: order.userId,
+            userName: order.user.firstName + " " + order.user.lastName,
+            bookId: order.bookId,
+            bookTitle: order.book.title,
+            finePaid: order.finePaid,
+            orderDate: order.orderedDate,
+            returnDate: order.returnedDate,
+            returned: order.returned,
+          };
+          return newOrder;
+        })
+        return newOrders;
+      })
+    )
+  }
+
+  sendEmails(){   
+    return this.http.get(this.baseUrl + "SendEmailForPendingReturns",{
+      responseType: "text"
+    })
+  }
+
+  blockOverDueFineUsers(){
+    return this.http.get(this.baseUrl + "BlockedFineOverdueUser",{
+      responseType:"text"
+    })
+  }
+
+  unblock(userId: number) {
+    return this.http.get(this.baseUrl + "Unblock", {
+      params: new HttpParams().append("userId", userId),
+      responseType: "text",
+    });
+  }
 }
