@@ -177,7 +177,7 @@ namespace API.Controllers
             }
         }
         
-        // [Authorize]
+        [Authorize]
         [HttpDelete("DeleteBook")]
         public ActionResult DeleteBook(int id)
         {
@@ -355,22 +355,19 @@ namespace API.Controllers
             }
 
         }
-        
+
         [Authorize]
         [HttpGet("Unblock")]
         public ActionResult Unblock(int userId)
         {
             var user = _context.Users.Find(userId);
-            if(user is not null)
+            if (user is not null)
             {
                 user.AccountStatus = AccountStatus.ACTIVE;
                 _context.SaveChanges();
                 return Ok("unblocked");
             }
-
             return Ok("not unblocked");
         }
-
-        
     }  
 }
