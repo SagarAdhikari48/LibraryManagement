@@ -24,7 +24,6 @@ export class BooksStoreComponent {
   constructor(private apiService: ApiService, private snackbar: MatSnackBar){
     this.apiService.getBooks().subscribe({
       next:(res: Book[]) => {
-        console.log("response:", res);
         // this.booksToDisplay = res;
         this.books = [];
         res.forEach(book =>{

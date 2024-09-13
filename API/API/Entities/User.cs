@@ -54,3 +54,8 @@ public class Order
     public int FinePaid { get; set; }
     
 }
+
+public class GoogleLoginDTO
+{
+    public string IdToken { get; set; }
+}

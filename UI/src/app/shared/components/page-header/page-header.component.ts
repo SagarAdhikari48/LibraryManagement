@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'page-header',
@@ -10,7 +11,7 @@ export class PageHeaderComponent {
   loggedIn: Boolean = false;
   name: string = '';
 
-  constructor(private apiService: ApiService){
+  constructor(private apiService: ApiService, private router: Router){
     apiService.userStatus.subscribe(
       {
         next: (res) =>{
@@ -29,6 +30,8 @@ export class PageHeaderComponent {
 
   logout() {
     this.apiService.logOut();
+    this.loggedIn = false;
+    this.router.navigate(['/login']);
   }
 
 

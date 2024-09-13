@@ -23,7 +23,6 @@ export class PageSideNavComponent implements OnInit {
         if (status === 'loggedIn') {
           router.navigateByUrl('/home');
           const user = this.apiService.getUserInfo();
-          console.log('UserInfo::', this.apiService.getUserInfo());
           if (user != null) {
             if (user.userType === UserType.ADMIN) {
               this.panelName = 'Admin Panel';

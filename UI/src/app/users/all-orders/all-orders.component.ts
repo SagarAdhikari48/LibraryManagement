@@ -35,7 +35,6 @@ export class AllOrdersComponent {
   constructor(private apiService: ApiService, private snackbar:MatSnackBar){
     this.apiService.getOrders().subscribe({
       next:(res : Order[]) =>{
-        console.log("get all orders:",res);
         this.ordersWithPendingReturns = res.filter(o=> !o.returned);
         this.orderswithCompletedReturns =  res.filter(o => o.returned);
 

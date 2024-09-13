@@ -3,15 +3,21 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { map, Observable, Subject } from 'rxjs';
 import { Book, BookCategory, Order, User, UserType } from '../../models/models';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   baseUrl: string = 'https://localhost:7233/api/library/';
+  googleLoginBaseUrl:string = 'https://localhost:7233/api/SocialLogin/';
   userStatus: Subject<string> = new Subject();
 
-  constructor(private http: HttpClient, private jwt: JwtHelperService) {}
+  constructor(
+    private http: HttpClient, 
+    private jwt: JwtHelperService,
+    private socialAuthService: SocialAuthService // Inject SocialAuthService
+  ) {}
 
   register(user: any) {
     return this.http.post(this.baseUrl + 'Register', user, {
@@ -60,6 +66,11 @@ export class ApiService {
 
   logOut() {
     localStorage.removeItem('access_token');
+       // Sign out from Google if logged in through Google
+       this.socialAuthService.signOut().catch(() => {
+        console.error('Error during Google sign-out');
+      });
+  
     this.userStatus.next('loggedOff');
   }
 
@@ -119,7 +130,6 @@ export class ApiService {
   }
 
   addNewCategory(category: BookCategory) {
-    console.log('Category:::=', category);
     return this.http.post(this.baseUrl + 'AddNewCategory', category, {
       responseType: 'text',
     });
@@ -166,10 +176,8 @@ export class ApiService {
   getOrders(){
     return this.http.get<any>(this.baseUrl + "GetOrders").pipe(
       map((orders: any)=>{
-        console.log("pippe map orders",orders)
 
         let newOrders = orders.map((order: any) =>{
-          console.log("pippe map order",order)
           let newOrder: Order = {
             id: order.id,
             userId: order.userId,
@@ -205,5 +213,13 @@ export class ApiService {
       params: new HttpParams().append("userId", userId),
       responseType: "text",
     });
+  }
+
+  googleLogin(idToken: string){
+    const res = this.http.post(this.googleLoginBaseUrl + "google-login",{
+      idToken: idToken
+    })
+
+    return res;
   }
 }

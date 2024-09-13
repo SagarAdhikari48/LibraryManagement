@@ -4,9 +4,8 @@
     <div class="user-info">
         @if (loggedIn) {
         <div class="name">Hi, {{name}}</div>
-        }
         <button mat-raised-button color="primary" routerLink="/profile">Profile</button>
-        <button mat-raised-button color="primary" (click)="logout()">Log
-            Out</button>
+        <button mat-raised-button color="primary" (click)="logout()">Log Out</button>
+        }
     </div>
 </mat-toolbar>

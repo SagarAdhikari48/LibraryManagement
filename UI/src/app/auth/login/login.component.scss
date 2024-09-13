@@ -22,8 +22,11 @@ mat-card {
   }
 
   mat-card-actions {
-    button {
+    display: flex;
+    flex-direction: column;
+    button {  
       margin: auto;
+      margin-bottom: 1rem;
       width: 80%;
     }
 

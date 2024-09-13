@@ -168,3 +168,9 @@ D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\run
 D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\myProject\libraray management angular asp dotnet\API\API\obj\Debug\net8.0\API.sourcelink.json
+D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\Google.Apis.dll
+D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\Google.Apis.Auth.dll
+D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\Google.Apis.Core.dll
+D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\System.Management.dll
+D:\myProject\libraray management angular asp dotnet\API\API\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll

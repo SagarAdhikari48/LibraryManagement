@@ -10,9 +10,12 @@ import { ReturnedBooksComponent } from './books/returned-books/returned-books.co
 import { ApprovalRequestComponent } from './users/approval-request/approval-request.component';
 import { AllOrdersComponent } from './users/all-orders/all-orders.component';
 import { ViewUsersComponent } from './users/view-users/view-users.component';
+import { GoogleLoginComponent } from './auth/google-login/google-login.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'google-login', component: GoogleLoginComponent },
+
   { path: 'register', component: RegisterComponent },
 
   { path: 'home', component: BooksStoreComponent },
@@ -22,6 +25,6 @@ export const routes: Routes = [
   { path: 'return-book', component: ReturnedBooksComponent },
   { path: 'approval-request', component: ApprovalRequestComponent },
   { path: 'all-orders', component: AllOrdersComponent },
-  {path:'view-users', component: ViewUsersComponent},
+  { path: 'view-users', component: ViewUsersComponent },
   { path: '**', component: PageNotFoundComponent },
 ];

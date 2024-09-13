@@ -22,7 +22,6 @@ export class ApprovalRequestComponent {
   constructor(private apiService: ApiService, private snackBar: MatSnackBar) {
     apiService.getUsers().subscribe({
       next: (res: User[]) => {
-        console.log("approve unapprove user",res);
         this.users = res.filter(
           (r) => r.accountStatus == AccountStatus.UNAPPROVED
         );

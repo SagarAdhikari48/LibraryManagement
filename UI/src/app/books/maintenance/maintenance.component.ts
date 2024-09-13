@@ -64,7 +64,6 @@ export class MaintenanceComponent {
     };
     this.apiService.addNewCategory(newCategory).subscribe({
       next: (res) => {
-        console.log('Response add new category:', res);
         if (res === 'cannot insert') {
           this.snackbar.open('You have already in the list', 'Ok');
         } else {
@@ -86,7 +85,6 @@ export class MaintenanceComponent {
     };
     this.apiService.addNewBook(newBook).subscribe({
       next: (res) => {
-        console.log('res', res);
         if (res == 'Inserted') {
           this.snackbar.open('Book inserted successfully!', 'Ok');
         } else {
@@ -100,7 +98,6 @@ export class MaintenanceComponent {
    let id = this.deleteBook?.value;
     this.apiService.deleteBook(Number(id)).subscribe({
       next: (res)=>{
-        console.log("delete book",res)
         if(res == 'deleted'){
           this.snackbar.open("Book deleted successfully!","Ok")
         }else{
